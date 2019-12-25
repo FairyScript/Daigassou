@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using UpdateHelper;
+//using UpdateHelper;
 
 namespace Daigassou
 {
@@ -16,12 +16,15 @@ namespace Daigassou
 
         public static async void GetLatestVersion()
         {
+            //我就不检查,你能奈我何
+            return;
+
             var wc = new WebClient();
             try
             {
                 var nowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                var newVersionJson = await UpdateHelper.UpdateHelper.CheckUpdate();
+                var newVersionJson = "{}";//await UpdateHelper.UpdateHelper.CheckUpdate();
                 try
                 {
                     var versionObj = JsonConvert.DeserializeObject<versionObject>(newVersionJson);
