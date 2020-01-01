@@ -185,7 +185,7 @@ namespace Daigassou
         {
             Log.overlayLog($"快捷键：演奏停止");
             StopKeyPlay();
-            
+            timer1.Dispose();//释放队列中的播放
 
         }
         private void StopKeyPlay()
@@ -244,7 +244,7 @@ namespace Daigassou
                 keyPlayLists = mtk.ArrangeKeyPlaysNew((double)(mtk.GetBpm() / nudBpm.Value));
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                if (interval<0)
+                if (interval<0)//如果时机已经过去，从最近的音符开始演奏
                 {
                     var keyPlay=keyPlayLists.Where((x)=>x.TimeMs> sub);
                     keyPlayLists=new Queue<KeyPlayList>();
@@ -269,7 +269,7 @@ namespace Daigassou
             return Task.Run(() =>
             {
                 //var keyPlayLists = mtk.ArrangeKeyPlays(mtk.Index);
-                ParameterController.GetInstance().InternalOffset = (int) numericUpDown2.Value;
+                ParameterController.GetInstance().InternalOffset = (int) networkDelayInput.Value;
                 ParameterController.GetInstance().Offset = 0;
                 kc.KeyPlayBack(keyPlayLists, 1, cts.Token);
                 _runningFlag = false;
@@ -292,6 +292,7 @@ namespace Daigassou
                 return;
 
             pathTextBox.Text = midFileDiag.FileName;
+            pathTextBox.SelectionStart = pathTextBox.Text.Length;//固定显示结尾
             _tmpScore = mtk.GetTrackManagers(); //note tracks
             var bpm = mtk.GetBpm();
             var tmp = new List<string>();
@@ -336,7 +337,7 @@ namespace Daigassou
         private void SyncButton_Click(object sender, EventArgs e)
         {
             var interval = dateTimePicker1.Value - DateTime.Now;
-            StartKeyPlayback((int) interval.TotalMilliseconds + (int) numericUpDown2.Value);
+            StartKeyPlayback((int)interval.TotalMilliseconds + (int)networkDelayInput.Value);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
