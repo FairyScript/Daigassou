@@ -120,5 +120,16 @@ namespace Daigassou
                 return flag;
             }
         }
+
+        public static void syncSetting()
+        {
+            if (Settings.Default.UpgradeRequired)
+            {
+                Console.WriteLine("检测到版本变动！开始读取旧版本设置");
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
+            }
+        }
     }
 }

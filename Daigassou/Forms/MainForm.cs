@@ -46,7 +46,9 @@ namespace Daigassou
 
             KeyBinding.LoadConfig();
             ThreadPool.SetMaxThreads(25, 50);
-            Task.Run(() => { CommonUtilities.GetLatestVersion(); });
+
+            CommonUtilities.syncSetting();
+            //Task.Run(() => { CommonUtilities.GetLatestVersion(); });
 
             Text += $@" Ver{Assembly.GetExecutingAssembly().GetName().Version}";
             cbMidiKeyboard.DataSource = KeyboardUtilities.GetKeyboardList();
