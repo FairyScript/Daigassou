@@ -26,9 +26,28 @@ namespace Daigassou
         private readonly KeyBindFormOld keyForm22 = new KeyBindFormOld();
         private readonly KeyBindForm8Key keyForm8 = new KeyBindForm8Key();
         private readonly MidiToKey mtk = new MidiToKey();
+
         private bool _playingFlag;
         private bool _runningFlag;
-        private bool _readyFlag = false;
+        private bool _readyFlag;
+
+        // 通过委托处理播放事件
+        private delegate void FlagChangedEvent(bool state);
+        private event FlagChangedEvent ReadyFlagChanged;
+        private bool ReadyFlag {
+            get { return _readyFlag; }
+            set
+            {
+                if(_readyFlag != value)
+                {
+                    _readyFlag = value;
+                    if(ReadyFlagChanged != null)
+                    {
+                        ReadyFlagChanged(value);
+                    }
+                }
+            }
+        }
         private Task _runningTask;
         private List<string> _tmpScore;
         private CancellationTokenSource cts = new CancellationTokenSource();
@@ -49,9 +68,27 @@ namespace Daigassou
 
             CommonUtilities.syncSetting();
             //Task.Run(() => { CommonUtilities.GetLatestVersion(); });
+            InitEventHandler();
 
             Text += $@" Ver{Assembly.GetExecutingAssembly().GetName().Version}";
             cbMidiKeyboard.DataSource = KeyboardUtilities.GetKeyboardList();
+        }
+
+        private void InitEventHandler()
+        {
+            ReadyFlagChanged += (bool state) =>
+            {
+                if (state)
+                {
+                    btnSyncReady.Text = "取消准备";
+                    btnSyncReady.BackColor = Color.Orange;
+                }
+                else
+                {
+                    btnSyncReady.Text = "准备好了";
+                    btnSyncReady.BackColor = Color.FromArgb(255, 128, 128);
+                }
+            };
         }
 
         private void InitHotKeyBiding()
@@ -196,9 +233,7 @@ namespace Daigassou
                 MessageBox.Show("没有midi你演奏个锤锤？", "喵喵喵？", MessageBoxButtons.OK, MessageBoxIcon.Question);
                 return;
             }
-            btnSyncReady.Text = "取消准备";
-            btnSyncReady.BackColor = Color.Orange;
-            _readyFlag = true;
+            ReadyFlag = true;
         }
         private void StopKeyPlay()
         {
@@ -209,9 +244,7 @@ namespace Daigassou
                 kc.ResetKey();
             }
             timer1.Dispose();//释放队列中的播放
-            btnSyncReady.Text = "准备好了";
-            btnSyncReady.BackColor = Color.FromArgb(255, 128, 128);
-            _readyFlag = false;
+            ReadyFlag = false;
         }
         private void PitchUp_HotKeyPressed(object sender, GlobalHotKeyEventArgs e)
         {
@@ -283,6 +316,7 @@ namespace Daigassou
                 ParameterController.GetInstance().Offset = 0;
                 kc.KeyPlayBack(keyPlayLists, 1, cts.Token);
                 _runningFlag = false;
+                Invoke(new Action(() => { ReadyFlag = false; }));
             }, token);
         }
 
@@ -344,7 +378,7 @@ namespace Daigassou
 
         private void SyncButton_Click(object sender, EventArgs e)
         {
-            if (!_readyFlag)
+            if (!ReadyFlag)
             {
                 var interval = dateTimePicker1.Value - DateTime.Now;
                 StartKeyPlay((int)interval.TotalMilliseconds + (int)networkDelayInput.Value);
