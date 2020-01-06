@@ -7,7 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -41,10 +40,7 @@ namespace Daigassou
                 if(_readyFlag != value)
                 {
                     _readyFlag = value;
-                    if(ReadyFlagChanged != null)
-                    {
-                        ReadyFlagChanged(value);
-                    }
+                    ReadyFlagChanged?.Invoke(value);
                 }
             }
         }
