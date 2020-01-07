@@ -15,7 +15,6 @@ using Daigassou.Input_Midi;
 using Daigassou.Properties;
 using Daigassou.Utils;
 using Newtonsoft.Json;
-using RainbowMage.OverlayPlugin;
 
 namespace Daigassou
 {
