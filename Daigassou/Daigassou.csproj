@@ -15,6 +15,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -56,7 +56,7 @@
     <ApplicationIcon>Resources\ico_128.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -88,6 +88,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Daigassou.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=3.1.4.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.3.1.4\lib\net46\Costura.dll</HintPath>
@@ -112,7 +115,7 @@
       <HintPath>..\packages\midi-dot-net2.2.0.1\lib\net461\Midi.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OverlayPlugin.Common">
       <HintPath>Reference\OverlayPlugin.Common.dll</HintPath>
@@ -120,10 +123,12 @@
     <Reference Include="PagedControl, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedControl.2.2.0\lib\net35\PagedControl.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -135,9 +140,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="Tungsten.Firewall, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tungsten.Firewall.2.0.2\lib\net45\Tungsten.Firewall.dll</HintPath>
-    </Reference>
-    <Reference Include="UpdateHelper">
-      <HintPath>C:\Users\tooko\source\repos\UpdateHelper\UpdateHelper\bin\x64\Release\UpdateHelper.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="Xilium.CefGlue">
@@ -189,25 +191,12 @@
     <Compile Include="Output_Key\KeyBinding.cs" />
     <Compile Include="Output_Key\KeyController.cs" />
     <Compile Include="Input_Midi\MidiToKey.cs" />
-    <Compile Include="Overlay\DIBitmap.cs" />
-    <Compile Include="Overlay\GlobalHotkeyChangedEventArgs.cs" />
-    <Compile Include="Overlay\GlobalHotkeyEnabledChangedEventArgs.cs" />
-    <Compile Include="Overlay\GlobalHotkeyType.cs" />
-    <Compile Include="Overlay\GlobalHotkeyTypeChangedEventArgs.cs" />
-    <Compile Include="Overlay\KeyPressedEventArgs.cs" />
-    <Compile Include="Overlay\LockStateChangedEventArgs.cs" />
-    <Compile Include="Overlay\MaxFrameRateChangedEventArgs.cs" />
-    <Compile Include="Overlay\OverlayBase`1.cs" />
-    <Compile Include="Overlay\OverlayConfigBase.cs" />
-    <Compile Include="Overlay\OverlayControl.cs" />
-    <Compile Include="Overlay\OverlayForm.cs">
+    <Compile Include="Overlay\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Overlay\SortKeyChangedEventArgs.cs" />
-    <Compile Include="Overlay\ThruStateChangedEventArgs.cs" />
-    <Compile Include="Overlay\UrlChangedEventArgs.cs" />
-    <Compile Include="Overlay\Util.cs" />
-    <Compile Include="Overlay\VisibleStateChangedEventArgs.cs" />
+    <Compile Include="Overlay\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
@@ -237,7 +226,9 @@
     <EmbeddedResource Include="Forms\PidSelect.resx">
       <DependentUpon>PidSelect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Overlay\OverlayForm.resx" />
+    <EmbeddedResource Include="Overlay\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -246,6 +237,7 @@
     <EmbeddedResource Include="Utils\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Daigassou.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -266,7 +258,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Version.ORZ" />
     <None Include="[大合奏]使用教程.md" />
   </ItemGroup>
   <ItemGroup>

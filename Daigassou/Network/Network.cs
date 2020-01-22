@@ -638,7 +638,7 @@ internal partial class Network
         }
 
         var opcode = BitConverter.ToUInt16(message, 18);
-        //Console.WriteLine(opcode.ToString("X4"));
+        Console.WriteLine(opcode.ToString("X4"));
 
         if (opcode == 0x018B) //Bard Performance
         {

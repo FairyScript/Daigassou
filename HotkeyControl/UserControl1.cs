@@ -36,46 +36,56 @@ namespace Daigassou
 
         private void InitializeComponent()
         {
-            this.components = (IContainer)new Container();
-            this.ResetButton = new Button();
-            this.TextBox = new TextBox();
+            this.components = new System.ComponentModel.Container();
+            this.ResetButton = new System.Windows.Forms.Button();
+            this.TextBox = new System.Windows.Forms.TextBox();
             this.ToolTipProvider = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
-            this.ResetButton.BackColor = Color.Transparent;
-            this.ResetButton.Dock = DockStyle.Right;
-            this.ResetButton.FlatAppearance.BorderSize = 0;
-            this.ResetButton.FlatStyle = FlatStyle.Flat;
+            // 
+            // ResetButton
+            // 
+            this.ResetButton.BackColor = System.Drawing.Color.Transparent;
             this.ResetButton.BackgroundImage = global::HotkeyControl.Properties.Resources.icons8_reset_64;
             this.ResetButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ResetButton.Location = new Point(227, 0);
+            this.ResetButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ResetButton.FlatAppearance.BorderSize = 0;
+            this.ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ResetButton.Location = new System.Drawing.Point(227, 0);
             this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new Size(28, 26);
+            this.ResetButton.Size = new System.Drawing.Size(28, 26);
             this.ResetButton.TabIndex = 0;
             this.ResetButton.TabStop = false;
-            this.ToolTipProvider.SetToolTip((Control)this.ResetButton, "重置快捷键");
+            this.ToolTipProvider.SetToolTip(this.ResetButton, "重置快捷键");
             this.ResetButton.UseVisualStyleBackColor = false;
             this.ResetButton.Visible = false;
-            this.ResetButton.Click += new EventHandler(this.ResetButton_Click);
-            this.TextBox.Dock = DockStyle.Fill;
-            this.TextBox.Location = new Point(0, 0);
+            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
+            // 
+            // TextBox
+            // 
+            this.TextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TextBox.Location = new System.Drawing.Point(0, 0);
             this.TextBox.Name = "TextBox";
             this.TextBox.ShortcutsEnabled = false;
-            this.TextBox.Size = new Size(227, 23);
+            this.TextBox.Size = new System.Drawing.Size(227, 39);
             this.TextBox.TabIndex = 0;
-            this.TextBox.TextChanged += new EventHandler(this.TextBox_TextChanged);
-            this.TextBox.KeyDown += new KeyEventHandler(this.TextBox_KeyDown);
-            this.TextBox.KeyUp += new KeyEventHandler(this.TextBox_KeyUp);
-            this.TextBox.Leave += new EventHandler(this.TextBox_Leave);
-            this.AutoScaleDimensions = new SizeF(7f, 16f);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.Controls.Add((Control)this.TextBox);
-            this.Controls.Add((Control)this.ResetButton);
-            this.Font = new Font("Tahoma", 9.75f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
-            this.Margin = new Padding(3, 4, 3, 4);
-            this.Name = nameof(HotKeyControl);
-            this.Size = new Size((int)byte.MaxValue, 26);
+            this.TextBox.TextChanged += new System.EventHandler(this.TextBox_TextChanged);
+            this.TextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
+            this.TextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyUp);
+            this.TextBox.Leave += new System.EventHandler(this.TextBox_Leave);
+            // 
+            // HotKeyControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 31F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.TextBox);
+            this.Controls.Add(this.ResetButton);
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Name = "HotKeyControl";
+            this.Size = new System.Drawing.Size(255, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         [DllImport("user32.dll", EntryPoint = "SendMessageW")]

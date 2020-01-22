@@ -4,59 +4,59 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Daigassou.Properties;
 using Newtonsoft.Json;
-using UpdateHelper;
+//using UpdateHelper;
 
 namespace Daigassou
 {
     internal class CommonUtilities
     {
-        private const string LatestApiAddress =
-            "https://raw.githubusercontent.com/AmanoTooko/Daigassou/master/Daigassou/Version.ORZ";
 
-        public static async void GetLatestVersion()
-        {
-            var wc = new WebClient();
-            try
-            {
-                var nowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        //public static async void GetLatestVersion()
+        //{
 
-                var newVersionJson = await UpdateHelper.UpdateHelper.CheckUpdate();
-                try
-                {
-                    var versionObj = JsonConvert.DeserializeObject<versionObject>(newVersionJson);
-                    if (versionObj.isRefuseToUse)
-                    {
-                        Environment.Exit(-1);
-                    }
-                    if (nowVersion != versionObj.Version)
-                        if (MessageBox.Show($"检测到新版本{versionObj.Version}已经发布，点击确定下载最新版哦！\r\n " +
-                                            $"当然就算你点了取消，这个提示每次打开还会出现的哦！" +
-                                            $"下载错误可以去NGA发布帖哦！bbs.nga.cn/read.php?tid=18790669 \r\n" +
-                                            $"新版本更新内容：{versionObj.Description}", "哇——更新啦！",
-                                MessageBoxButtons.OKCancel,
-                                MessageBoxIcon.Information) == DialogResult.OK)
-                        {
-                            Process.Start("http://blog.ffxiv.cat/index.php/download/");
+        //    var wc = new WebClient();
+        //    try
+        //    {
+        //        var nowVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                        }
-                    if (versionObj.isForceUpdate)
-                    {
-                        Environment.Exit(-2);
-                    }
+        //        var newVersionJson = "{}";//await UpdateHelper.UpdateHelper.CheckUpdate();
+        //        try
+        //        {
+        //            var versionObj = JsonConvert.DeserializeObject<versionObject>(newVersionJson);
+        //            if (versionObj.isRefuseToUse)
+        //            {
+        //                Environment.Exit(-1);
+        //            }
+        //            if (nowVersion != versionObj.Version)
+        //                if (MessageBox.Show($"检测到新版本{versionObj.Version}已经发布，点击确定下载最新版哦！\r\n " +
+        //                                    $"当然就算你点了取消，这个提示每次打开还会出现的哦！" +
+        //                                    $"下载错误可以去NGA发布帖哦！bbs.nga.cn/read.php?tid=18790669 \r\n" +
+        //                                    $"新版本更新内容：{versionObj.Description}", "哇——更新啦！",
+        //                        MessageBoxButtons.OKCancel,
+        //                        MessageBoxIcon.Information) == DialogResult.OK)
+        //                {
+        //                    Process.Start("http://blog.ffxiv.cat/index.php/download/");
 
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+        //                }
+        //            if (versionObj.isForceUpdate)
+        //            {
+        //                Environment.Exit(-2);
+        //            }
+
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //            throw;
+        //        }
                 
-            }
-            catch (Exception e)
-            {
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //    }
+        //}
         public class versionObject
         {
             public bool isForceUpdate { get; set; }
@@ -108,6 +108,17 @@ namespace Daigassou
                 }
 
                 return flag;
+            }
+        }
+
+        public static void syncSetting()
+        {
+            if (Settings.Default.UpgradeRequired)
+            {
+                Console.WriteLine("检测到版本变动！开始读取旧版本设置");
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
             }
         }
     }
