@@ -274,7 +274,7 @@ namespace Daigassou
                 ParameterController.GetInstance().Pitch -= 1;
                 Log.overlayLog($"快捷键：向下移调 当前 {ParameterController.GetInstance().Pitch}");
             }
-
+        }
         /// <summary>
         /// MIDI 文件异常
         /// </summary>
