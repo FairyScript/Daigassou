@@ -25,9 +25,9 @@ namespace Daigassou
         private readonly KeyBindForm8Key keyForm8 = new KeyBindForm8Key();
         private readonly MidiToKey mtk = new MidiToKey();
 
-        private bool _playingFlag;
-        private bool _runningFlag;
-        private bool _readyFlag;
+        private static bool _playingFlag;
+        private static bool _runningFlag;
+        private static bool _readyFlag;
 
         // 通过委托处理播放事件
         private delegate void FlagChangedEvent(bool state);
@@ -71,6 +71,7 @@ namespace Daigassou
 
         private void InitEventHandler()
         {
+            //注册准备按钮
             ReadyFlagChanged += (bool state) =>
             {
                 if (state)
@@ -83,6 +84,12 @@ namespace Daigassou
                     btnSyncReady.Text = "准备好了";
                     btnSyncReady.BackColor = Color.FromArgb(255, 128, 128);
                 }
+            };
+
+            //注册轨道选择
+            ReadyFlagChanged += (bool state) =>
+            {
+                trackComboBox.Enabled = !state;
             };
         }
 
