@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Daigassou.Properties;
 using Melanchall.DryWetMidi.Devices;
-using Melanchall.DryWetMidi.Smf;
-using Melanchall.DryWetMidi.Smf.Interaction;
+using Melanchall.DryWetMidi.Core;
+using Melanchall.DryWetMidi.Interaction;
 
 namespace Daigassou
 {

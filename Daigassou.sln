@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daigassou", "Daigassou\Daigassou.csproj", "{392B1F7C-5D18-4ABD-84A4-7E01FC6CCA13}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DF834658-4DB6-4DDB-80AF-6E8830F92BCB} = {DF834658-4DB6-4DDB-80AF-6E8830F92BCB}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiKeyBoardTest", "MidiKeyBoardTest\MidiKeyBoardTest.csproj", "{A760AD8F-C6E1-4670-8AAA-4237F45F0C8F}"
 EndProject

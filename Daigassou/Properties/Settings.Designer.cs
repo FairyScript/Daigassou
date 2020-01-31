@@ -153,5 +153,17 @@ namespace Daigassou.Properties {
                 this["UpgradeRequired"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsBeta {
+            get {
+                return ((bool)(this["IsBeta"]));
+            }
+            set {
+                this["IsBeta"] = value;
+            }
+        }
     }
 }

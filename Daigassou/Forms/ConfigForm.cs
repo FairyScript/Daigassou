@@ -34,6 +34,7 @@ namespace Daigassou
             chordEventNum.Value = Settings.Default.MinChordMs;
             cbAutoChord.Checked = Settings.Default.AutoChord;
             tbNtpServer.Text = Settings.Default.NtpServer;
+            enableBetaFeature.Checked = Settings.Default.IsBeta;
 
             foreach (GlobalHotKey hkmEnumerateGlobalHotKey in hkm.EnumerateGlobalHotKeys)
             {
@@ -121,6 +122,16 @@ namespace Daigassou
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void enableBetaFeature_CheckedChanged(object sender, EventArgs e)
+        {
+            if (enableBetaFeature.Checked != Settings.Default.IsBeta && MessageBox.Show("要重新启动嘛？", "提示", MessageBoxButtons.OKCancel,MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                Application.Restart();
+            }
+            Settings.Default.IsBeta = enableBetaFeature.Checked;
+            Settings.Default.Save();
         }
     }
 }

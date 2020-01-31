@@ -79,7 +79,7 @@ namespace Daigassou
             var res = Parse(message);
 
             
-            if (res.header.MessageType == 0x011E && Log.isBeta)//CountDown
+            if (res.header.MessageType == 0x011E)//CountDown
             {
                 var countDownTime = res.data[36];
                 var nameBytes = new byte[18];
@@ -89,7 +89,7 @@ namespace Daigassou
             }
 
 
-            if (res.header.MessageType == 0x011C && Log.isBeta) //party check
+            if (res.header.MessageType == 0x011C) //party check
             {
                 Console.WriteLine("get!");
                 var nameBytes = new byte[18];
@@ -98,7 +98,7 @@ namespace Daigassou
                 Play?.Invoke(this, new PlayEvent(1, 0, name));
 
             }
-            if (res.header.MessageType == 0x0272 && Log.isBeta) //party check
+            if (res.header.MessageType == 0x0272) //party check
             {
                 Console.WriteLine("272");
 
