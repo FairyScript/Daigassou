@@ -36,7 +36,7 @@ namespace Daigassou
         private Queue<KeyPlayList> keyPlayLists;
         private NetworkClass net;
 
-
+        LogForm logForm;
         public MainForm()
         {
             InitializeComponent();
@@ -348,7 +348,7 @@ namespace Daigassou
                 ParameterController.GetInstance().Offset = 0;
                 kc.KeyPlayBack(keyPlayLists, 1, cts.Token);
                 state.RunningFlag = false;
-                Invoke(new Action(() => { state.ReadyFlag = false; }));
+                state.ReadyFlag = false;
                 Log.overlayLog($"演奏：演奏结束");
                 kc.ResetKey();
             }, token);
@@ -595,15 +595,19 @@ namespace Daigassou
 
                 net._shouldStop = true;
                 state.IsCaptureFlag = false;
-                //(sender as Button).Text = "开始同步";
-                //(sender as Button).BackColor = Color.FromArgb(255, 128, 128);
+
             }
             else
             {
                 TimeSync();
-                
-                
-                if (net == null) net = new NetworkClass();
+
+                if (!Settings.Default.IsBeta)
+                {
+                    state.IsCaptureFlag = true;
+                    return;
+                }
+
+                net = new NetworkClass();
                 net.Play += Net_Play;
                 try
                 {
@@ -613,8 +617,7 @@ namespace Daigassou
                         Task.Run(() => { net.Run((uint) FFProcess.FindFFXIVProcess().First().Id); });
 
                         state.IsCaptureFlag = true;
-                        //(sender as Button).Text = "停止同步";
-                        //(sender as Button).BackColor=Color.Aquamarine;
+
                     }
                     else if( ffprocessList.Count==2)
                     {
@@ -630,8 +633,7 @@ namespace Daigassou
                         }
 
                         state.IsCaptureFlag = true;
-                        //(sender as Button).Text = "停止同步";
-                        //(sender as Button).BackColor = Color.Aquamarine;
+
                     }
                     else
                     {
@@ -643,7 +645,7 @@ namespace Daigassou
                 }
             }
         }
-        private delegate void remotePlay(int time, string name);
+        private delegate void remotePlay(int time, int timeStamp, string name);
         private void Net_Play(object sender, PlayEvent e)
         {
             if (this.InvokeRequired)
@@ -651,12 +653,12 @@ namespace Daigassou
                 if (e.Mode==0)
                 {
                     var n = new remotePlay(NetPlay);
-                    this.Invoke(n, e.Time, e.Text);
+                    this.Invoke(n, e.Time,e.TimeStamp, e.Text);
                 }
                 else if (e.Mode == 1)
                 {
                     var n = new remotePlay(NetStop);
-                    this.Invoke(n, e.Time, e.Text);
+                    this.Invoke(n, e.Time, e.TimeStamp, e.Text);
                 }
                 
             }
@@ -664,27 +666,32 @@ namespace Daigassou
             {
                 if (e.Mode == 0)
                 {
-                    NetPlay(e.Time, e.Text);
+                    NetPlay(e.Time, e.TimeStamp, e.Text);
                 }
                 else if (e.Mode == 1)
                 {
-                    NetStop(e.Time, e.Text);
+                    NetStop(e.Time, e.TimeStamp, e.Text);
                 }
                 
             }
             
         }
 
-        private void NetPlay(int time,string name)
+        private void NetPlay(int time, int timeStamp, string name)
         {
-            dateTimePicker1.Value = DateTime.Now.AddMilliseconds(time * 1000);
-            StartKeyPlay(time * 1000 + (int)networkDelayInput.Value);
-            Log.overlayLog($"网络控制：{name.Trim().Replace("\0", string.Empty)}发起倒计时:{time}s");
-            tlblTime.Text = $"{name.Trim().Replace("\0",string.Empty)}发起倒计时:{time}s";
+            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
+            DateTime dt = startTime.AddSeconds(timeStamp+time);
+
+            dateTimePicker1.Value = dt;
+            var msTime = (dt - DateTime.Now).TotalMilliseconds;
+            StartKeyPlay((int)msTime + (int)networkDelayInput.Value);
+            Log.overlayLog($"网络控制：{name.Trim().Replace("\0", string.Empty)}发起倒计时，目标时间:{dt.ToString("HH:mm:ss")}");
+            tlblTime.Text = $"{name.Trim().Replace("\0", string.Empty)}发起倒计时:{msTime}毫秒";
         }
 
-        private void NetStop(int time, string name)
+        private void NetStop(int time,int timeStamp, string name)
         {
+            if (!state.RunningFlag) return;//规避party check的多次取消
             StopKeyPlay();
             Log.overlayLog($"网络控制：{name.Trim().Replace("\0", string.Empty)}停止了演奏");
             tlblTime.Text = $"{name.Trim().Replace("\0", string.Empty)}停止了演奏";
@@ -744,7 +751,8 @@ namespace Daigassou
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
-            
+            logForm = new LogForm();
+            logForm.Show();
         }
 }
 }

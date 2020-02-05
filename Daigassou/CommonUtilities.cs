@@ -16,9 +16,8 @@ namespace Daigassou
         private const string LatestApiAddress =
             "https://raw.githubusercontent.com/AmanoTooko/Daigassou/master/Daigassou/Version.ORZ";
 
-        public static async void GetLatestVersion()
+        public static void GetLatestVersion()
         {
-            return;
             //var wc = new WebClient();
             //try
             //{

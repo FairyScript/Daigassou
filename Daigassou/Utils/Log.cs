@@ -1,80 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Daigassou;
-namespace Daigassou.Utils
-{
-    public partial class LogForm : Form
-    {
-        public LogForm()
-        {
-            InitializeComponent();
-        }
-    }
 
+namespace Daigassou
+{
     public static class Log
     {
         private static LogForm logform { get; set; }
         private static DateTime lastTime;
-        public static RainbowMage.OverlayPlugin.LabelOverlayConfig log;
-        public static bool isBeta=false;
+
+        public delegate void LogEvent(string s);
+        public static event LogEvent OverLayLogReceived;
         public static void overlayLog(string text)
         {
-            if (log!=null)
-            {
-                log.Text = string.Format($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}");
-            }
+            Debug($"overlay: {text}");
+            OverLayLogReceived?.Invoke(text);
         }
 
-        public static void overlayProcess(string process)
-        {
-            if (log != null)
-            {
-                log.Process = process;
-            }
-        }
+        //public static void overlayProcess(string process)
+        //{
+        //    if (log != null)
+        //    {
+        //        log.Process = process;
+        //    }
+        //}
         public static void Debug(string text)
         {
-            Console.WriteLine(text);
+            Console.WriteLine($"[{DateTime.Now.ToString("T")}]: {text}");
             //output(Color.Blue, text);
         }
 
-        private static void output(Color c, string s)
-        {
-            logform?.Invoke(new Action(() =>
-            {
-                logform.LogTextBox.SelectionColor = c; 
-                logform.LogTextBox.AppendText(s);
-                logform.LogTextBox.SelectionColor = logform.LogTextBox.ForeColor;
-                
-            }));
-        }
 
-        public static void I(string text)
+        public static void Info(string text)
         {
             Debug(text);
         }
-        public static void E(string text)
+        public static void Warning(string text)
         {
             Debug(text);
         }
-        public static void Ex(Exception e,string text)
+        public static void Ex(Exception e, string text)
         {
             Debug(text);
         }
-        public static void S(string text)
-        {
-            Debug(text);
-        }
+        
 
-        public static void B(byte[] text,bool isoffset)
+        public static void ByteText(byte[] text, bool isoffset)
         {
             var sb = new StringBuilder();
             var delaytime = 0;
@@ -92,13 +65,14 @@ namespace Daigassou.Utils
                 {
                     Console.WriteLine("???");
                 }
-                sb.Append($"{DateTime.Now.ToString("O")}   {text.Length} Bytes {delaytime} ms Interval {(DateTime.Now - lastTime).Milliseconds} ms");
-                sb.AppendLine();lastTime = DateTime.Now;
+                sb.Append($"{text.Length} Bytes {delaytime} ms Interval {(DateTime.Now - lastTime).Milliseconds} ms");
+                sb.AppendLine();
+                lastTime = DateTime.Now;
             }
             else
             {
 
-                sb.Append($"{DateTime.Now.ToString("O")}   {text.Length} Bytes");
+                sb.Append($"{text.Length} Bytes");
 
             }
 
@@ -123,7 +97,7 @@ namespace Daigassou.Utils
                 sb.Append(text[i].ToString("X2"));
             }
 
-            //Log.overlayLog(sb.ToString());
+            //Log.OverlayLog(sb.ToString());
             Debug(sb.ToString());
         }
     }

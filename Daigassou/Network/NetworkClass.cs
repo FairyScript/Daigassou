@@ -19,11 +19,20 @@ namespace Daigassou
         private readonly String text;
         private readonly int time;
         private readonly int mode;
-        public PlayEvent(int mode, int Time, String text)
+        private readonly int timeStamp;
+        [Obsolete("2.4.0.0版本弃用")]
+        public PlayEvent(int Mode, int Time, String Text)
         {
-            this.mode = mode;
-            this.time = Time;
-            this.text = text;
+            mode = Mode;
+            time = Time;
+            text = Text;
+        }
+        public PlayEvent(int Mode, int Time, int TimeStamp, String Text)
+        {
+            mode = Mode;
+            time = Time;
+            text = Text;
+            timeStamp = TimeStamp;
         }
         public String Text { get { return text; } }
         public int Time { get { return time; } }
@@ -31,6 +40,7 @@ namespace Daigassou
         {
             get { return mode; }
         }
+        public int TimeStamp { get { return timeStamp; } }
     }
     public class PacketEntry
     {
@@ -79,13 +89,16 @@ namespace Daigassou
             var res = Parse(message);
 
             
-            if (res.header.MessageType == 0x011E)//CountDown
+            if (res.header.MessageType == 0x036B)//CountDown
             {
                 var countDownTime = res.data[36];
                 var nameBytes = new byte[18];
+                var timeStampBytes = new byte[4];
                 Array.Copy(res.data, 41, nameBytes, 0, 18);
+                Array.Copy(res.data, 24, timeStampBytes, 0, 4);
                 var name = Encoding.UTF8.GetString(nameBytes) ?? "";
-                Play?.Invoke(this, new PlayEvent(0, Convert.ToInt32(countDownTime), name));
+                Console.WriteLine(BitConverter.ToInt32(timeStampBytes, 0));
+                Play?.Invoke(this, new PlayEvent(0, Convert.ToInt32(countDownTime), BitConverter.ToInt32(timeStampBytes, 0), name));
             }
 
 
@@ -98,7 +111,7 @@ namespace Daigassou
                 Play?.Invoke(this, new PlayEvent(1, 0, name));
 
             }
-            if (res.header.MessageType == 0x0272) //party check
+            if (res.header.MessageType == 0x0272) //scene mark
             {
                 Console.WriteLine("272");
 
@@ -149,7 +162,7 @@ namespace Daigassou
                 var length = res.data[32];
                 var notes = new byte[length];
                 Array.Copy(res.data, 33, notes, 0, length);
-                Log.B(notes, true);//TODO: Time analyze 
+                Log.ByteText(notes, true);//TODO: Time analyze 
                 ParameterController.GetInstance().AnalyzeNotes(notes);
             }
         }
@@ -229,7 +242,7 @@ namespace Daigassou
                     netAuthApps.Add(netAuthApp);
 
                 }
-                Log.S("l-firewall-registered");
+                Log.Info("l-firewall-registered");
             }
             catch (Exception ex)
             {

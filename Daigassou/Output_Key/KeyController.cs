@@ -140,7 +140,7 @@ namespace Daigassou
                     }
                     Thread.Sleep(1);
                 }
-                Log.overlayProcess(((int)(nextKey.TimeMs*100/endTime)).ToString());
+                //Log.overlayProcess(((int)(nextKey.TimeMs*100/endTime)).ToString());
                 if (nextKey.Ev == KeyPlayList.NoteEvent.NoteOn)
                     KeyboardPress(nextKey.Pitch + ParameterController.GetInstance().Pitch);
                 else

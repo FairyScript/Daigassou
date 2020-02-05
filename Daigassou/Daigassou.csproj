@@ -164,13 +164,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonUtilities.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommonUtilities.cs" />
     <Compile Include="Forms\ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,8 +202,14 @@
     <Compile Include="Forms\KeyBindForm8Key.Designer.cs">
       <DependentUpon>KeyBindForm8Key.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LogForm.designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\NetworkClass.cs" />
-    <Compile Include="NtpClient.cs" />
+    <Compile Include="Utils\NtpClient.cs" />
     <Compile Include="Output_Key\BackgroundKey.cs" />
     <Compile Include="Output_Key\KeyBinding.cs" />
     <Compile Include="Output_Key\KeyController.cs" />
@@ -232,12 +238,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Utils\FFProcess.cs" />
-    <Compile Include="Utils\LogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utils\LogForm.Designer.cs">
-      <DependentUpon>LogForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Utils\Log.cs" />
     <Compile Include="Utils\ParameterController.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
@@ -257,14 +258,14 @@
     <EmbeddedResource Include="Forms\PidSelect.resx">
       <DependentUpon>PidSelect.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Overlay\OverlayForm.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Utils\LogForm.resx">
-      <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config">
       <SubType>Designer</SubType>
