@@ -78,10 +78,11 @@
             this.tlblTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.timeStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.playTimer = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.manualBpmCheckBox = new System.Windows.Forms.CheckBox();
             radioButton3 = new System.Windows.Forms.RadioButton();
             this.gBMidiFile.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -330,6 +331,7 @@
             // 
             // gBParameterSetting
             // 
+            this.gBParameterSetting.Controls.Add(this.manualBpmCheckBox);
             this.gBParameterSetting.Controls.Add(this.panel5);
             this.gBParameterSetting.Controls.Add(radioButton3);
             this.gBParameterSetting.Controls.Add(this.nudBpm);
@@ -356,6 +358,7 @@
             // 
             // nudBpm
             // 
+            this.nudBpm.Enabled = false;
             this.nudBpm.Font = new System.Drawing.Font("微软雅黑", 12F);
             this.nudBpm.ForeColor = System.Drawing.Color.Gray;
             this.nudBpm.Location = new System.Drawing.Point(182, 33);
@@ -370,7 +373,7 @@
             0,
             0});
             this.nudBpm.Name = "nudBpm";
-            this.nudBpm.Size = new System.Drawing.Size(154, 29);
+            this.nudBpm.Size = new System.Drawing.Size(66, 29);
             this.nudBpm.TabIndex = 9;
             this.toolTip1.SetToolTip(this.nudBpm, "点这里可以设置速度");
             this.nudBpm.Value = new decimal(new int[] {
@@ -574,7 +577,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(75)))), ((int)(((byte)(107)))));
-            this.button1.Location = new System.Drawing.Point(0, 659);
+            this.button1.Location = new System.Drawing.Point(0, 662);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(357, 30);
             this.button1.TabIndex = 13;
@@ -689,7 +692,7 @@
             this.tlblTime.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tlblTime.ForeColor = System.Drawing.Color.Gray;
             this.tlblTime.Name = "tlblTime";
-            this.tlblTime.Size = new System.Drawing.Size(68, 25);
+            this.tlblTime.Size = new System.Drawing.Size(68, 32);
             this.tlblTime.Text = "时钟未同步";
             // 
             // statusStrip1
@@ -698,11 +701,11 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tlblTime,
             this.timeStripStatus,
-            this.toolStripSplitButton1,
+            this.toolStripStatusLabel2,
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 689);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 692);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(357, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(357, 37);
             this.statusStrip1.TabIndex = 18;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -711,18 +714,19 @@
             this.timeStripStatus.BackColor = System.Drawing.Color.Transparent;
             this.timeStripStatus.Name = "timeStripStatus";
             this.timeStripStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.timeStripStatus.Size = new System.Drawing.Size(56, 25);
+            this.timeStripStatus.Size = new System.Drawing.Size(56, 32);
             this.timeStripStatus.Text = "20:00:00";
             // 
-            // toolStripSplitButton1
+            // toolStripStatusLabel2
             // 
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton1.Image = global::Daigassou.Properties.Resources.s2;
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(36, 28);
-            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
-            this.toolStripSplitButton1.ButtonClick += new System.EventHandler(this.ToolStripSplitButton1_ButtonClick);
+            this.toolStripStatusLabel2.AutoSize = false;
+            this.toolStripStatusLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.toolStripStatusLabel2.Image = global::Daigassou.Properties.Resources.s2;
+            this.toolStripStatusLabel2.ImageTransparentColor = System.Drawing.Color.Transparent;
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(24, 32);
+            this.toolStripStatusLabel2.ToolTipText = "内测版的悬浮窗功能\r\n不是内测用户不要点";
+            this.toolStripStatusLabel2.Click += new System.EventHandler(this.toolStripStatusLabel2_Click);
             // 
             // toolStripStatusLabel1
             // 
@@ -731,8 +735,9 @@
             this.toolStripStatusLabel1.Image = global::Daigassou.Properties.Resources.icons8_advertisement_page_90;
             this.toolStripStatusLabel1.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(24, 25);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(24, 32);
             this.toolStripStatusLabel1.ToolTipText = "内测版的悬浮窗功能\r\n不是内测用户不要点";
+            this.toolStripStatusLabel1.Visible = false;
             this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // playTimer
@@ -740,12 +745,23 @@
             this.playTimer.Enabled = true;
             this.playTimer.Tick += new System.EventHandler(this.PlayTimer_Tick);
             // 
+            // manualBpmCheckBox
+            // 
+            this.manualBpmCheckBox.AutoSize = true;
+            this.manualBpmCheckBox.Location = new System.Drawing.Point(254, 33);
+            this.manualBpmCheckBox.Name = "manualBpmCheckBox";
+            this.manualBpmCheckBox.Size = new System.Drawing.Size(93, 26);
+            this.manualBpmCheckBox.TabIndex = 19;
+            this.manualBpmCheckBox.Text = "手动设置";
+            this.manualBpmCheckBox.UseVisualStyleBackColor = true;
+            this.manualBpmCheckBox.CheckedChanged += new System.EventHandler(this.manualBpmCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(357, 719);
+            this.ClientSize = new System.Drawing.Size(357, 729);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gBKeyboardSetting);
@@ -834,8 +850,9 @@
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.ToolStripStatusLabel timeStripStatus;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.CheckBox manualBpmCheckBox;
     }
 }
 

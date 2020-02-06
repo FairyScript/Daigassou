@@ -28,7 +28,7 @@ namespace Daigassou.Utils
         public volatile int Offset;
         public int Pitch { get; set; }
         public int Speed { get; set; }
-        public bool NeedSync { get; set; } = true;
+        public bool NeedSync { get; set; } = false;
         private DateTime lastSentTime;
         private Timer offsetTimer;
 
@@ -116,13 +116,11 @@ namespace Daigassou.Utils
                 OffsetSync(packetTime);
 
                 offsetTimer.Enabled = true;
-#if true
                 foreach (var timedNote in ret)
                 {
                     timedNote.StartTime -= new TimeSpan(0, 0, 0, 0, packetTime);
                     Console.WriteLine(timedNote.ToString());
                 }
-#endif
                 
             }
 
@@ -132,7 +130,7 @@ namespace Daigassou.Utils
 
             if (NeedSync)
             {
-                Offset = InternalOffset+(500-packetTime);
+                //Offset = InternalOffset+(500-packetTime);
                 Console.WriteLine($"InternalOffset is sync to {Offset}");
                 Log.overlayLog($"网络同步:内部延迟同步至{Offset}毫秒");
                 NeedSync = false;

@@ -19,7 +19,7 @@ namespace Daigassou
             hook = (string text) => {
                 ListViewItem item = new ListViewItem();
                 item.Text = text;
-                logListView.Items.Add(text);
+                Invoke(new Action(()=>logListView.Items.Add(text)));
             };
             Log.OverLayLogReceived += hook;
         }

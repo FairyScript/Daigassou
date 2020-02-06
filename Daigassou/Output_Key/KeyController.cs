@@ -37,7 +37,7 @@ namespace Daigassou
                 else
                     KeyboardPress(KeyBinding.GetNoteToKey(pitch));
                 Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")},{(pitch - 24).ToString("X2")} Note On");
-                ParameterController.GetInstance().CheckSyncStatus();
+                //ParameterController.GetInstance().CheckSyncStatus();
             }
         }
 
@@ -128,7 +128,7 @@ namespace Daigassou
                 var nextKey = keyQueue.Dequeue();
                 // var duration = tick * nextKey.TimeMs;
                 //var targetTime = startTime + duration;
-                var targetTime = startTime + nextKey.TimeMs * speed;
+                var targetTime = startTime + nextKey.TimeMs;// * speed;
                 while (true)
                 {
                     

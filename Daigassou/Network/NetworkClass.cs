@@ -102,16 +102,16 @@ namespace Daigassou
             }
 
 
-            if (res.header.MessageType == 0x011C) //party check
+            if (res.header.MessageType == 0x033B) //party check
             {
-                Console.WriteLine("get!");
+                Console.WriteLine("mark");
                 var nameBytes = new byte[18];
                 Array.Copy(res.data, 52, nameBytes, 0, 18);
                 var name = Encoding.UTF8.GetString(nameBytes) ?? "";
                 Play?.Invoke(this, new PlayEvent(1, 0, name));
 
             }
-            if (res.header.MessageType == 0x0272) //scene mark
+            if (res.header.MessageType == 0x0355) //scene mark
             {
                 Console.WriteLine("272");
 
@@ -163,7 +163,7 @@ namespace Daigassou
                 var notes = new byte[length];
                 Array.Copy(res.data, 33, notes, 0, length);
                 Log.ByteText(notes, true);//TODO: Time analyze 
-                ParameterController.GetInstance().AnalyzeNotes(notes);
+                //ParameterController.GetInstance().AnalyzeNotes(notes);
             }
         }
 

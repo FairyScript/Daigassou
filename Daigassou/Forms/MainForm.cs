@@ -50,7 +50,11 @@ namespace Daigassou
             InitEventHandler();
 
             Text += $@" Ver{Assembly.GetExecutingAssembly().GetName().Version}";
-            if (Settings.Default.IsBeta) Text += " Beta";
+            if (Settings.Default.IsBeta)
+            {
+                Text += " Beta";
+                toolStripStatusLabel1.Visible = true;
+            }
             cbMidiKeyboard.DataSource = KeyboardUtilities.GetKeyboardList();
 
         }
@@ -125,9 +129,9 @@ namespace Daigassou
                     hotkeysArrayList.Add(
                         new GlobalHotKey(
                             "PitchDown", Modifiers.Control, Keys.F9, true));
-                    hotkeysArrayList.Add(
-                        new GlobalHotKey(
-                            "Pause", Modifiers.Control, Keys.F12, true));
+                    //hotkeysArrayList.Add(
+                    //    new GlobalHotKey(
+                    //        "Pause", Modifiers.Control, Keys.F12, true));
                     KeyBinding.hotkeyArrayList = hotkeysArrayList;
                 }
                 else
@@ -140,7 +144,7 @@ namespace Daigassou
                     ((GlobalHotKey) hotkeysArrayList[1]).HotKeyPressed += Stop_HotKeyPressed;
                     ((GlobalHotKey) hotkeysArrayList[2]).HotKeyPressed += PitchUp_HotKeyPressed;
                     ((GlobalHotKey) hotkeysArrayList[3]).HotKeyPressed += PitchDown_HotKeyPressed;
-                    ((GlobalHotKey) hotkeysArrayList[4]).HotKeyPressed += Pause_HotKeyPressed;
+                    //((GlobalHotKey) hotkeysArrayList[4]).HotKeyPressed += Pause_HotKeyPressed;
                 }
                 var ret = true;
                 foreach (GlobalHotKey k in hotkeysArrayList)
@@ -316,7 +320,8 @@ namespace Daigassou
 
                 mtk.OpenFile(midFileDiag.FileName);
                 mtk.GetTrackManagers();
-                keyPlayLists = mtk.ArrangeKeyPlaysNew((double)(mtk.GetBpm() / nudBpm.Value));
+                var speed = manualBpmCheckBox.Checked ? (double)(mtk.GetBpm() / nudBpm.Value) : 1;
+                keyPlayLists = mtk.ArrangeKeyPlaysNew(speed);
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
                 if (interval<0)
@@ -330,7 +335,7 @@ namespace Daigassou
                     }
                 }
                 Log.overlayLog($"文件名：{Path.GetFileName(midFileDiag.FileName)}");
-                Log.overlayLog($"定时：{timer1.Interval}毫秒后演奏");
+                Log.overlayLog($"定时：{timer1.Interval / 1000}秒后演奏");
                 sw.Stop();
                 Console.WriteLine(sw.ElapsedMilliseconds);
                 
@@ -347,8 +352,10 @@ namespace Daigassou
                 ParameterController.GetInstance().InternalOffset = (int) networkDelayInput.Value;
                 ParameterController.GetInstance().Offset = 0;
                 kc.KeyPlayBack(keyPlayLists, 1, cts.Token);
-                state.RunningFlag = false;
-                state.ReadyFlag = false;
+                Invoke(new Action(() => {
+                    state.RunningFlag = false;
+                    state.ReadyFlag = false;
+                }));
                 Log.overlayLog($"演奏：演奏结束");
                 kc.ResetKey();
             }, token);
@@ -601,13 +608,13 @@ namespace Daigassou
             {
                 TimeSync();
 
+                net = new NetworkClass();
+
                 if (!Settings.Default.IsBeta)
                 {
                     state.IsCaptureFlag = true;
                     return;
                 }
-
-                net = new NetworkClass();
                 net.Play += Net_Play;
                 try
                 {
@@ -686,7 +693,7 @@ namespace Daigassou
             var msTime = (dt - DateTime.Now).TotalMilliseconds;
             StartKeyPlay((int)msTime + (int)networkDelayInput.Value);
             Log.overlayLog($"网络控制：{name.Trim().Replace("\0", string.Empty)}发起倒计时，目标时间:{dt.ToString("HH:mm:ss")}");
-            tlblTime.Text = $"{name.Trim().Replace("\0", string.Empty)}发起倒计时:{msTime}毫秒";
+            tlblTime.Text = $"{name.Trim().Replace("\0", string.Empty)}发起倒计时";
         }
 
         private void NetStop(int time,int timeStamp, string name)
@@ -735,12 +742,12 @@ namespace Daigassou
             if (e.Alt && e.Control && e.Shift && e.KeyCode == Keys.S) mtk.SaveToFile();
         }
 
-        private void ToolStripSplitButton1_ButtonClick(object sender, EventArgs e)
-        {
+        //private void ToolStripSplitButton1_ButtonClick(object sender, EventArgs e)
+        //{
             
-            var form=new ConfigForm(hotkeysArrayList,kc,hkm);
-            form.ShowDialog();
-        }
+        //    var form=new ConfigForm(hotkeysArrayList,kc,hkm);
+        //    form.ShowDialog();
+        //}
 
 
 
@@ -754,5 +761,16 @@ namespace Daigassou
             logForm = new LogForm();
             logForm.Show();
         }
-}
+
+        private void toolStripStatusLabel2_Click(object sender, EventArgs e)
+        {
+            var form = new ConfigForm(hotkeysArrayList, kc, hkm);
+            form.ShowDialog();
+        }
+
+        private void manualBpmCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            nudBpm.Enabled = (sender as CheckBox).Checked;
+        }
+    }
 }

@@ -211,9 +211,9 @@ namespace Daigassou
             var nowTimeMs = 0;
             var retKeyPlayLists = new Queue<KeyPlayList>();
             PreProcessTempoMap();
-            PreProcessSpeed(speed);
-            PreProcessChord();
-            PreProcessEvents();
+            if(speed != 1) PreProcessSpeed(speed);
+            //PreProcessChord();
+            //PreProcessEvents();
             using (var timedEvent = trunkEvents.ManageTimedEvents())
             {
                 foreach (var ev in timedEvent.Events)
