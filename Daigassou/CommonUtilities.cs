@@ -129,5 +129,17 @@ namespace Daigassou
                 Settings.Default.Save();
             }
         }
+
+        [DllImport("user32.dll")]
+        public static extern void SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
+        public static void SwitchToGameWindow()
+        {
+            var ffprocessList = FFProcess.FindFFXIVProcess();
+            if(ffprocessList.Count > 0)
+            {
+                IntPtr handle = ffprocessList[0].MainWindowHandle;
+                SwitchToThisWindow(handle, true);
+            }
+        }
     }
 }

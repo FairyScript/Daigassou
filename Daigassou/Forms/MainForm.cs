@@ -222,16 +222,15 @@ namespace Daigassou
             {
                 Log.overlayLog($"快捷键：演奏开始");
                 StartKeyPlay(1000);
-                
             }
                 
-            else
-            {
+            //else
+            //{
 
-                Log.overlayLog($"快捷键：演奏恢复");
-                kc.internalRunningFlag = true;
-                kc.pauseOffset += Environment.TickCount - pauseTime;
-            }
+            //    Log.overlayLog($"快捷键：演奏恢复");
+            //    kc.internalRunningFlag = true;
+            //    kc.pauseOffset += Environment.TickCount - pauseTime;
+            //}
         }
 
         private void Stop_HotKeyPressed(object sender, GlobalHotKeyEventArgs e)
@@ -255,6 +254,7 @@ namespace Daigassou
                 Log.overlayLog($"错误：没有Midi文件");
                 return;
             }
+            CommonUtilities.SwitchToGameWindow();
             state.ReadyFlag = true;
         }
         private void StopKeyPlay()

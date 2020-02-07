@@ -16,7 +16,7 @@ namespace Daigassou
 {
     public class PlayEvent : EventArgs
     {
-        private readonly String text;
+        private readonly string text;
         private readonly int time;
         private readonly int mode;
         private readonly int timeStamp;
