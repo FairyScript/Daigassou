@@ -93,7 +93,7 @@ namespace Daigassou
             KeyBinding.SaveConfig();
             hkm.RemoveHotKey("Start");
             hkm.RemoveHotKey("Stop");
-            hkm.RemoveHotKey("Pause");
+            hkm.RemoveHotKey("Capture");
             hkm.RemoveHotKey("PitchUp");
             hkm.RemoveHotKey("PitchDown");
             foreach (GlobalHotKey k in keyList)

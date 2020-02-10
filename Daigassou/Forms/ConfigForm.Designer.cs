@@ -42,6 +42,8 @@
             this.minEventNum = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.enableBetaFeature = new System.Windows.Forms.CheckBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.hotKeyControl5 = new Daigassou.HotKeyControl();
             this.hotKeyControl4 = new Daigassou.HotKeyControl();
@@ -51,8 +53,6 @@
             this.hotKeyControl2 = new Daigassou.HotKeyControl();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.enableBetaFeature = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.chordEventNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minEventNum)).BeginInit();
             this.panel1.SuspendLayout();
@@ -65,7 +65,7 @@
             this.label6.Location = new System.Drawing.Point(14, 18);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 20);
+            this.label6.Size = new System.Drawing.Size(127, 36);
             this.label6.TabIndex = 42;
             this.label6.Text = "开始演奏";
             // 
@@ -77,7 +77,7 @@
             this.label9.Location = new System.Drawing.Point(15, 117);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 20);
+            this.label9.Size = new System.Drawing.Size(127, 36);
             this.label9.TabIndex = 45;
             this.label9.Text = "向下移调";
             // 
@@ -87,7 +87,7 @@
             this.label8.Location = new System.Drawing.Point(14, 84);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(65, 20);
+            this.label8.Size = new System.Drawing.Size(127, 36);
             this.label8.TabIndex = 44;
             this.label8.Text = "向上移调";
             // 
@@ -97,7 +97,7 @@
             this.label7.Location = new System.Drawing.Point(14, 51);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 20);
+            this.label7.Size = new System.Drawing.Size(127, 36);
             this.label7.TabIndex = 43;
             this.label7.Text = "结束演奏";
             // 
@@ -107,7 +107,7 @@
             this.label1.Location = new System.Drawing.Point(4, 19);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 20);
+            this.label1.Size = new System.Drawing.Size(211, 36);
             this.label1.TabIndex = 33;
             this.label1.Text = "两音符最小间隔";
             // 
@@ -117,7 +117,7 @@
             this.label2.Location = new System.Drawing.Point(4, 57);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 20);
+            this.label2.Size = new System.Drawing.Size(239, 36);
             this.label2.TabIndex = 34;
             this.label2.Text = "和弦解析最小间隔";
             // 
@@ -126,7 +126,7 @@
             this.tbNtpServer.ForeColor = System.Drawing.Color.Gray;
             this.tbNtpServer.Location = new System.Drawing.Point(140, 125);
             this.tbNtpServer.Name = "tbNtpServer";
-            this.tbNtpServer.Size = new System.Drawing.Size(142, 26);
+            this.tbNtpServer.Size = new System.Drawing.Size(142, 44);
             this.tbNtpServer.TabIndex = 40;
             this.tbNtpServer.TextChanged += new System.EventHandler(this.TbNtpServer_TextChanged);
             // 
@@ -136,7 +136,7 @@
             this.label3.Location = new System.Drawing.Point(4, 95);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(79, 20);
+            this.label3.Size = new System.Drawing.Size(155, 36);
             this.label3.TabIndex = 35;
             this.label3.Text = "等比例琶音";
             // 
@@ -145,7 +145,7 @@
             this.cbAutoChord.AutoSize = true;
             this.cbAutoChord.Location = new System.Drawing.Point(140, 95);
             this.cbAutoChord.Name = "cbAutoChord";
-            this.cbAutoChord.Size = new System.Drawing.Size(56, 24);
+            this.cbAutoChord.Size = new System.Drawing.Size(103, 40);
             this.cbAutoChord.TabIndex = 39;
             this.cbAutoChord.Text = "开启";
             this.cbAutoChord.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@
             this.label5.Location = new System.Drawing.Point(4, 129);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(79, 20);
+            this.label5.Size = new System.Drawing.Size(155, 36);
             this.label5.TabIndex = 36;
             this.label5.Text = "NTP服务器";
             // 
@@ -171,7 +171,7 @@
             0,
             0});
             this.chordEventNum.Name = "chordEventNum";
-            this.chordEventNum.Size = new System.Drawing.Size(120, 26);
+            this.chordEventNum.Size = new System.Drawing.Size(120, 44);
             this.chordEventNum.TabIndex = 38;
             this.chordEventNum.ValueChanged += new System.EventHandler(this.ChordEventNum_NumChanged);
             // 
@@ -185,7 +185,7 @@
             0,
             0});
             this.minEventNum.Name = "minEventNum";
-            this.minEventNum.Size = new System.Drawing.Size(120, 26);
+            this.minEventNum.Size = new System.Drawing.Size(120, 44);
             this.minEventNum.TabIndex = 37;
             this.minEventNum.ValueChanged += new System.EventHandler(this.MinEventNum_NumChanged);
             // 
@@ -195,7 +195,7 @@
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.label4.Location = new System.Drawing.Point(23, 13);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 20);
+            this.label4.Size = new System.Drawing.Size(183, 36);
             this.label4.TabIndex = 49;
             this.label4.Text = "高级播放设置";
             // 
@@ -217,6 +217,27 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(313, 208);
             this.panel1.TabIndex = 50;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(4, 165);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(155, 36);
+            this.label12.TabIndex = 41;
+            this.label12.Text = "实验性功能";
+            // 
+            // enableBetaFeature
+            // 
+            this.enableBetaFeature.AutoSize = true;
+            this.enableBetaFeature.Location = new System.Drawing.Point(140, 165);
+            this.enableBetaFeature.Name = "enableBetaFeature";
+            this.enableBetaFeature.Size = new System.Drawing.Size(103, 40);
+            this.enableBetaFeature.TabIndex = 42;
+            this.enableBetaFeature.Text = "开启";
+            this.enableBetaFeature.UseVisualStyleBackColor = true;
+            this.enableBetaFeature.CheckedChanged += new System.EventHandler(this.enableBetaFeature_CheckedChanged);
             // 
             // panel3
             // 
@@ -244,7 +265,7 @@
             this.hotKeyControl5.Location = new System.Drawing.Point(147, 151);
             this.hotKeyControl5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl5.Name = "hotKeyControl5";
-            this.hotKeyControl5.Size = new System.Drawing.Size(150, 23);
+            this.hotKeyControl5.Size = new System.Drawing.Size(150, 39);
             this.hotKeyControl5.TabIndex = 48;
             this.hotKeyControl5.ToolTip = null;
             this.hotKeyControl5.HotKeyIsSet += new BondTech.HotkeyManagement.Win.HotKeyIsSetEventHandler(this.HotKeyControl1_HotKeyIsSet);
@@ -257,7 +278,7 @@
             this.hotKeyControl4.Location = new System.Drawing.Point(147, 117);
             this.hotKeyControl4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl4.Name = "hotKeyControl4";
-            this.hotKeyControl4.Size = new System.Drawing.Size(150, 23);
+            this.hotKeyControl4.Size = new System.Drawing.Size(150, 39);
             this.hotKeyControl4.TabIndex = 48;
             this.hotKeyControl4.ToolTip = null;
             this.hotKeyControl4.HotKeyIsSet += new BondTech.HotkeyManagement.Win.HotKeyIsSetEventHandler(this.HotKeyControl1_HotKeyIsSet);
@@ -270,7 +291,7 @@
             this.hotKeyControl3.Location = new System.Drawing.Point(147, 84);
             this.hotKeyControl3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl3.Name = "hotKeyControl3";
-            this.hotKeyControl3.Size = new System.Drawing.Size(150, 23);
+            this.hotKeyControl3.Size = new System.Drawing.Size(150, 39);
             this.hotKeyControl3.TabIndex = 47;
             this.hotKeyControl3.ToolTip = null;
             this.hotKeyControl3.HotKeyIsSet += new BondTech.HotkeyManagement.Win.HotKeyIsSetEventHandler(this.HotKeyControl1_HotKeyIsSet);
@@ -283,7 +304,7 @@
             this.hotKeyControl1.Location = new System.Drawing.Point(147, 18);
             this.hotKeyControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl1.Name = "hotKeyControl1";
-            this.hotKeyControl1.Size = new System.Drawing.Size(150, 23);
+            this.hotKeyControl1.Size = new System.Drawing.Size(150, 39);
             this.hotKeyControl1.TabIndex = 41;
             this.hotKeyControl1.ToolTip = null;
             this.hotKeyControl1.HotKeyIsSet += new BondTech.HotkeyManagement.Win.HotKeyIsSetEventHandler(this.HotKeyControl1_HotKeyIsSet);
@@ -297,9 +318,9 @@
             this.label11.Location = new System.Drawing.Point(15, 150);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 20);
+            this.label11.Size = new System.Drawing.Size(127, 36);
             this.label11.TabIndex = 45;
-            this.label11.Text = "暂停演奏";
+            this.label11.Text = "切换同步";
             // 
             // hotKeyControl2
             // 
@@ -308,7 +329,7 @@
             this.hotKeyControl2.Location = new System.Drawing.Point(147, 51);
             this.hotKeyControl2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl2.Name = "hotKeyControl2";
-            this.hotKeyControl2.Size = new System.Drawing.Size(150, 23);
+            this.hotKeyControl2.Size = new System.Drawing.Size(150, 39);
             this.hotKeyControl2.TabIndex = 46;
             this.hotKeyControl2.ToolTip = null;
             this.hotKeyControl2.HotKeyIsSet += new BondTech.HotkeyManagement.Win.HotKeyIsSetEventHandler(this.HotKeyControl1_HotKeyIsSet);
@@ -331,34 +352,13 @@
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.label10.Location = new System.Drawing.Point(23, 234);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(79, 20);
+            this.label10.Size = new System.Drawing.Size(155, 36);
             this.label10.TabIndex = 52;
             this.label10.Text = "快捷键绑定";
             // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(4, 165);
-            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(79, 20);
-            this.label12.TabIndex = 41;
-            this.label12.Text = "实验性功能";
-            // 
-            // enableBetaFeature
-            // 
-            this.enableBetaFeature.AutoSize = true;
-            this.enableBetaFeature.Location = new System.Drawing.Point(140, 165);
-            this.enableBetaFeature.Name = "enableBetaFeature";
-            this.enableBetaFeature.Size = new System.Drawing.Size(56, 24);
-            this.enableBetaFeature.TabIndex = 42;
-            this.enableBetaFeature.Text = "开启";
-            this.enableBetaFeature.UseVisualStyleBackColor = true;
-            this.enableBetaFeature.CheckedChanged += new System.EventHandler(this.enableBetaFeature_CheckedChanged);
-            // 
             // ConfigForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 36F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;

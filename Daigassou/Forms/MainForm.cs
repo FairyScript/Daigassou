@@ -24,7 +24,7 @@ namespace Daigassou
         private readonly KeyController kc = new KeyController();
         private readonly KeyBindFormOld keyForm22 = new KeyBindFormOld();
         private readonly KeyBindForm8Key keyForm8 = new KeyBindForm8Key();
-        private readonly MidiToKey mtk = new MidiToKey();
+        //private readonly MidiToKey mtk = new MidiToKey();
 
         
         private Task _runningTask;
@@ -33,7 +33,8 @@ namespace Daigassou
         internal HotKeyManager hkm;
         private ArrayList hotkeysArrayList;
         private int pauseTime = 0;
-        private Queue<KeyPlayList> keyPlayLists;
+        //private Queue<KeyPlayList> keyPlayLists;
+        private MidiController midiController;
         private NetworkClass net;
 
         LogForm logForm;
@@ -129,9 +130,9 @@ namespace Daigassou
                     hotkeysArrayList.Add(
                         new GlobalHotKey(
                             "PitchDown", Modifiers.Control, Keys.F9, true));
-                    //hotkeysArrayList.Add(
-                    //    new GlobalHotKey(
-                    //        "Pause", Modifiers.Control, Keys.F12, true));
+                    hotkeysArrayList.Add(
+                        new GlobalHotKey(
+                            "Capture", Modifiers.Control, Keys.F12, true));
                     KeyBinding.hotkeyArrayList = hotkeysArrayList;
                 }
                 else
@@ -144,7 +145,7 @@ namespace Daigassou
                     ((GlobalHotKey) hotkeysArrayList[1]).HotKeyPressed += Stop_HotKeyPressed;
                     ((GlobalHotKey) hotkeysArrayList[2]).HotKeyPressed += PitchUp_HotKeyPressed;
                     ((GlobalHotKey) hotkeysArrayList[3]).HotKeyPressed += PitchDown_HotKeyPressed;
-                    //((GlobalHotKey) hotkeysArrayList[4]).HotKeyPressed += Pause_HotKeyPressed;
+                    ((GlobalHotKey) hotkeysArrayList[4]).HotKeyPressed += Capture_HotKeyPressed;
                 }
                 var ret = true;
                 foreach (GlobalHotKey k in hotkeysArrayList)
@@ -186,13 +187,11 @@ namespace Daigassou
             }
         }
 
-        private void Pause_HotKeyPressed(object sender, GlobalHotKeyEventArgs e)
+        private void Capture_HotKeyPressed(object sender, GlobalHotKeyEventArgs e)
         {
-            if (state.RunningFlag)
+            if (!state.RunningFlag && !state.ReadyFlag)
             {
-                Log.overlayLog($"快捷键：演奏暂停");
-                pauseTime = Environment.TickCount;
-                kc.internalRunningFlag = false;
+                BtnTimeSync_Click(sender,e);
             }
         }
 
@@ -259,13 +258,14 @@ namespace Daigassou
         }
         private void StopKeyPlay()
         {
-            kc.ResetKey();
+            KeyController.ResetKey();
             if (state.RunningFlag)
             {
                 
                 state.RunningFlag = false;
-                cts.Cancel();
-                
+                midiController.StopPlayback();
+
+
             }
             timer1.Dispose();//释放队列中的播放
             state.ReadyFlag = false;
@@ -303,7 +303,7 @@ namespace Daigassou
         }
         private void StartKeyPlayback(int interval)
         {
-            kc.ResetKey();
+            KeyController.ResetKey();
             if (Path.GetExtension(midFileDiag.FileName) != ".mid" && Path.GetExtension(midFileDiag.FileName) != ".midi")
             {                
                 throw new IllegalMIDIFileException("没有midi");
@@ -318,66 +318,57 @@ namespace Daigassou
                 
                 timer1.Start();
 
-                mtk.OpenFile(midFileDiag.FileName);
-                mtk.GetTrackManagers();
-                var speed = manualBpmCheckBox.Checked ? (double)(mtk.GetBpm() / nudBpm.Value) : 1;
-                keyPlayLists = mtk.ArrangeKeyPlaysNew(speed);
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-                if (interval<0)
-                {
-                    var keyPlay=keyPlayLists.Where((x)=>x.TimeMs> sub);
-                    keyPlayLists=new Queue<KeyPlayList>();
-                    foreach (KeyPlayList kp in keyPlay)
-                    {
-                        kp.TimeMs -= sub;
-                        keyPlayLists.Enqueue(kp);
-                    }
-                }
+                
+                //var speed = manualBpmCheckBox.Checked ? (double)(mtk.GetBpm() / nudBpm.Value) : 1;
+
                 Log.overlayLog($"文件名：{Path.GetFileName(midFileDiag.FileName)}");
                 Log.overlayLog($"定时：{timer1.Interval / 1000}秒后演奏");
-                sw.Stop();
-                Console.WriteLine(sw.ElapsedMilliseconds);
                 
             }
 
 
         }
 
-        private Task NewCancellableTask(CancellationToken token)
-        {
-            return Task.Run(() =>
-            {
-                //var keyPlayLists = mtk.ArrangeKeyPlays(mtk.Index);
-                ParameterController.GetInstance().InternalOffset = (int) networkDelayInput.Value;
-                ParameterController.GetInstance().Offset = 0;
-                kc.KeyPlayBack(keyPlayLists, 1, cts.Token);
-                Invoke(new Action(() => {
-                    state.RunningFlag = false;
-                    state.ReadyFlag = false;
-                }));
-                Log.overlayLog($"演奏：演奏结束");
-                kc.ResetKey();
-            }, token);
-        }
+        //private Task NewCancellableTask(CancellationToken token)
+        //{
+        //    return Task.Run(() =>
+        //    {
+        //        //var keyPlayLists = mtk.ArrangeKeyPlays(mtk.Index);
+        //        ParameterController.GetInstance().InternalOffset = (int) networkDelayInput.Value;
+        //        ParameterController.GetInstance().Offset = 0;
+        //        kc.KeyPlayBack(keyPlayLists, 1, cts.Token);
+
+        //        /* --- Play Over --- */
+        //        Invoke(new Action(() => {
+        //            state.RunningFlag = false;
+        //            state.ReadyFlag = false;
+        //        }));
+        //        Log.overlayLog($"演奏：演奏结束");
+        //        kc.ResetKey();
+        //    }, token);
+        //}
 
         private void trackComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mtk.Index = trackComboBox.SelectedIndex;
+            midiController.trackIndex = trackComboBox.SelectedIndex;
         }
 
 
         private void selectFileButton_Click(object sender, EventArgs e)
         {
             if (midFileDiag.ShowDialog() == DialogResult.OK)
-                mtk.OpenFile(midFileDiag.FileName);
+            {
+                midiController = new MidiController();
+                midiController.OpenFile(midFileDiag.FileName);
+            }
             else
                 return;
 
             pathTextBox.Text = midFileDiag.FileName;
             pathTextBox.SelectionStart = pathTextBox.Text.Length;//固定显示结尾
-            _tmpScore = mtk.GetTrackManagers(); //note tracks
-            var bpm = mtk.GetBpm();
+
+            _tmpScore = midiController.GetTracks(); //note tracks
+            var bpm = midiController.GetBpm();
             var tmp = new List<string>();
 
             if (_tmpScore != null)
@@ -398,22 +389,22 @@ namespace Daigassou
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            mtk.Offset = EnumPitchOffset.OctaveLower;
+            //mtk.Offset = EnumPitchOffset.OctaveLower;
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            mtk.Offset = EnumPitchOffset.None;
+            //mtk.Offset = EnumPitchOffset.None;
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
-            mtk.Offset = EnumPitchOffset.OctaveHigher;
+            //mtk.Offset = EnumPitchOffset.OctaveHigher;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            mtk.Bpm = (int) nudBpm.Value;
+            //mtk.Bpm = (int) nudBpm.Value;
             
         }
 
@@ -458,8 +449,16 @@ namespace Daigassou
         {
             timer1.Enabled = false;
             state.RunningFlag = true;
-            cts = new CancellationTokenSource();
-            _runningTask = NewCancellableTask(cts.Token);
+            //cts = new CancellationTokenSource();
+            //_runningTask = NewCancellableTask(cts.Token);
+            midiController.StartPlayback((_,ee)=> {
+                Invoke(new Action(() =>
+                {
+                    state.RunningFlag = false;
+                    state.ReadyFlag = false;
+                }));
+            });
+            
         }
 
 
@@ -558,7 +557,7 @@ namespace Daigassou
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            if (mtk.PlaybackStart((int) nudBpm.Value) == 0)
+            if (midiController.AuditionStart() == 0)
             {
                 btnPlay.BackgroundImage = Resources.c_play_1;
                 btnPause.BackgroundImage = Resources.c_pause;
@@ -572,7 +571,7 @@ namespace Daigassou
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (mtk.PlaybackRestart() == 0)
+            if (midiController.AuditionRestart() == 0)
             {
                 btnPlay.BackgroundImage = Resources.c_play;
                 btnPause.BackgroundImage = Resources.c_pause;
@@ -585,7 +584,7 @@ namespace Daigassou
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if (mtk.PlaybackPause() == 0)
+            if (midiController.AuditionPause() == 0)
             {
                 btnPlay.BackgroundImage = Resources.c_play;
                 btnPause.BackgroundImage = Resources.c_pause_1;
@@ -709,7 +708,7 @@ namespace Daigassou
         }
         private void PlayTimer_Tick(object sender, EventArgs e)
         {
-            if (state.PlayingFlag) timeLabel.Text = mtk.PlaybackInfo();
+            if (state.PlayingFlag) timeLabel.Text = midiController.AuditionInfo();
 
             timeStripStatus.Text = DateTime.Now.ToString("T");
         }
@@ -739,7 +738,7 @@ namespace Daigassou
 
         private void TrackComboBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Alt && e.Control && e.Shift && e.KeyCode == Keys.S) mtk.SaveToFile();
+            //if (e.Alt && e.Control && e.Shift && e.KeyCode == Keys.S) mtk.SaveToFile();
         }
 
         //private void ToolStripSplitButton1_ButtonClick(object sender, EventArgs e)

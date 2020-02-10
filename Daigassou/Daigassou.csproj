@@ -95,12 +95,6 @@
     <Reference Include="HotkeyManagement, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HotkeyManagement.WinForms.1.7.0\lib\HotkeyManagement.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlRenderer">
-      <HintPath>Reference\HtmlRenderer.dll</HintPath>
-    </Reference>
-    <Reference Include="HZH_Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HZH_Controls.1.0.11\lib\net40\HZH_Controls.dll</HintPath>
-    </Reference>
     <Reference Include="Interop.NetFwTypeLib">
       <HintPath>Reference\Interop.NetFwTypeLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -122,9 +116,6 @@
     </Reference>
     <Reference Include="Overby.Extensions.Attachments, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Overby.Extensions.Attachments.1.2.0\lib\net40\Overby.Extensions.Attachments.dll</HintPath>
-    </Reference>
-    <Reference Include="OverlayPlugin.Common">
-      <HintPath>Reference\OverlayPlugin.Common.dll</HintPath>
     </Reference>
     <Reference Include="PagedControl, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedControl.2.2.0\lib\net35\PagedControl.dll</HintPath>
@@ -156,9 +147,6 @@
       <HintPath>..\packages\Tungsten.Firewall.2.0.2\lib\net45\Tungsten.Firewall.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Xilium.CefGlue">
-      <HintPath>Reference\Xilium.CefGlue.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonUtilities.cs" />
@@ -205,6 +193,7 @@
     <Compile Include="Forms\LogForm.designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Input_Midi\MidiController.cs" />
     <Compile Include="Network\NetworkClass.cs" />
     <Compile Include="Utils\NtpClient.cs" />
     <Compile Include="Output_Key\BackgroundKey.cs" />
@@ -328,7 +317,7 @@
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.0.8\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.8\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.1.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.1.0\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\packages\Fody.6.0.8\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.8\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.6.1.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.1.0\build\Fody.targets')" />
 </Project>

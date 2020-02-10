@@ -201,56 +201,56 @@ namespace Daigassou
                     new WritingSettings {TextEncoding = Encoding.Default});
         }
 
-        public Queue<KeyPlayList> ArrangeKeyPlaysNew(double speed)
-        {
-            var trunkEvents = trunks.ElementAt(Index).Events;
+        //public Queue<KeyPlayList> ArrangeKeyPlaysNew(double speed)
+        //{
+        //    var trunkEvents = trunks.ElementAt(Index).Events;
 
-            var ticksPerQuarterNote = Convert.ToInt64(midi.TimeDivision.ToString()
-                .TrimEnd(" ticks/qnote".ToCharArray()));
-            var tickBase = 60000 / (float) Bpm / ticksPerQuarterNote; //duplicate code need to be delete
-            var nowTimeMs = 0;
-            var retKeyPlayLists = new Queue<KeyPlayList>();
-            PreProcessTempoMap();
-            if(speed != 1) PreProcessSpeed(speed);
-            //PreProcessChord();
-            //PreProcessEvents();
-            using (var timedEvent = trunkEvents.ManageTimedEvents())
-            {
-                foreach (var ev in timedEvent.Events)
-                    switch (ev.Event)
-                    {
-                        case NoteOnEvent @event:
-                        {
-                            var noteNumber = (int) (@event.NoteNumber + Offset);
-                            nowTimeMs += (int) (tickBase * @event.DeltaTime);
-                            retKeyPlayLists.Enqueue(new KeyPlayList(KeyPlayList.NoteEvent.NoteOn,
-                                noteNumber, nowTimeMs));
-                        }
-                            break;
-                        case NoteOffEvent @event:
-                        {
-                            var noteNumber = (int) (@event.NoteNumber + Offset);
-                            nowTimeMs += (int) (tickBase * @event.DeltaTime);
-                            retKeyPlayLists.Enqueue(new KeyPlayList(KeyPlayList.NoteEvent.NoteOff,
-                                noteNumber, nowTimeMs));
-                        }
-                            break;
-                        case SetTempoEvent @event:
-                        {
-                            nowTimeMs += (int) (tickBase * @event.DeltaTime);
-                            tickBase = (float) @event.MicrosecondsPerQuarterNote / 1000 / ticksPerQuarterNote;
-                        }
-                            break;
-                        default:
-                        {
-                            nowTimeMs += (int) (tickBase * ev.Event.DeltaTime);
-                        }
-                            break;
-                    }
-            }
+        //    var ticksPerQuarterNote = Convert.ToInt64(midi.TimeDivision.ToString()
+        //        .TrimEnd(" ticks/qnote".ToCharArray()));
+        //    var tickBase = 60000 / (float) Bpm / ticksPerQuarterNote; //duplicate code need to be delete
+        //    var nowTimeMs = 0;
+        //    var retKeyPlayLists = new Queue<KeyPlayList>();
+        //    PreProcessTempoMap();
+        //    if(speed != 1) PreProcessSpeed(speed);
+        //    //PreProcessChord();
+        //    //PreProcessEvents();
+        //    using (var timedEvent = trunkEvents.ManageTimedEvents())
+        //    {
+        //        foreach (var ev in timedEvent.Events)
+        //            switch (ev.Event)
+        //            {
+        //                case NoteOnEvent @event:
+        //                {
+        //                    var noteNumber = (int) (@event.NoteNumber + Offset);
+        //                    nowTimeMs += (int) (tickBase * @event.DeltaTime);
+        //                    retKeyPlayLists.Enqueue(new KeyPlayList(KeyPlayList.NoteEvent.NoteOn,
+        //                        noteNumber, nowTimeMs));
+        //                }
+        //                    break;
+        //                case NoteOffEvent @event:
+        //                {
+        //                    var noteNumber = (int) (@event.NoteNumber + Offset);
+        //                    nowTimeMs += (int) (tickBase * @event.DeltaTime);
+        //                    retKeyPlayLists.Enqueue(new KeyPlayList(KeyPlayList.NoteEvent.NoteOff,
+        //                        noteNumber, nowTimeMs));
+        //                }
+        //                    break;
+        //                case SetTempoEvent @event:
+        //                {
+        //                    nowTimeMs += (int) (tickBase * @event.DeltaTime);
+        //                    tickBase = (float) @event.MicrosecondsPerQuarterNote / 1000 / ticksPerQuarterNote;
+        //                }
+        //                    break;
+        //                default:
+        //                {
+        //                    nowTimeMs += (int) (tickBase * ev.Event.DeltaTime);
+        //                }
+        //                    break;
+        //            }
+        //    }
 
-            return retKeyPlayLists;
-        }
+        //    return retKeyPlayLists;
+        //}
 
         public void PreProcessTempoMap()
         {
@@ -297,6 +297,8 @@ namespace Daigassou
 
             return 0;
         }
+
+
 
         public string PlaybackInfo()
         {

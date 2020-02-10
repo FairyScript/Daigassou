@@ -122,9 +122,9 @@ namespace Daigassou.Input_Midi
                 if (Convert.ToInt32(msg.NoteNumber) <= 84 && Convert.ToInt32(msg.NoteNumber) >= 48)
                 {
                     if (msg.Velocity == 0) //note off
-                        kc.KeyboardRelease(Convert.ToInt32(msg.NoteNumber));
+                        KeyController.KeyboardRelease(Convert.ToInt32(msg.NoteNumber));
                     else
-                        kc.KeyboardPress(Convert.ToInt32(msg.NoteNumber));
+                        KeyController.KeyboardPress(Convert.ToInt32(msg.NoteNumber));
                 }
             }
         }
@@ -135,7 +135,7 @@ namespace Daigassou.Input_Midi
             {
                 Log.Debug($"msg  {msg.NoteNumber} off at time {DateTime.Now:O}");
                 if (Convert.ToInt32(msg.NoteNumber) <= 84 && Convert.ToInt32(msg.NoteNumber) >= 48)
-                    kc.KeyboardRelease(Convert.ToInt32(msg.NoteNumber));
+                    KeyController.KeyboardRelease(Convert.ToInt32(msg.NoteNumber));
             }
         }
     }
