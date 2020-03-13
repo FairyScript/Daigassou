@@ -27,6 +27,14 @@ namespace Daigassou
             time = Time;
             text = Text;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Mode">0:播放,1:停止</param>
+        /// <param name="Time">秒数</param>
+        /// <param name="TimeStamp">开始的时间戳</param>
+        /// <param name="Text">发起人</param>
         public PlayEvent(int Mode, int Time, int TimeStamp, String Text)
         {
             mode = Mode;
@@ -89,7 +97,7 @@ namespace Daigassou
             var res = Parse(message);
 
             
-            if (res.header.MessageType == 0x036B)//CountDown
+            if (res.header.MessageType == 0x01ac)//CountDown
             {
                 var countDownTime = res.data[36];
                 var nameBytes = new byte[18];
@@ -97,27 +105,27 @@ namespace Daigassou
                 Array.Copy(res.data, 41, nameBytes, 0, 18);
                 Array.Copy(res.data, 24, timeStampBytes, 0, 4);
                 var name = Encoding.UTF8.GetString(nameBytes) ?? "";
+                Console.WriteLine("Countdown");
+                Play?.Invoke(this, new PlayEvent(1, 0, BitConverter.ToInt32(timeStampBytes, 0), name));
+            }
+
+
+            if (res.header.MessageType == 0x02d2) //ensemble
+            {
+                Console.WriteLine("ensemble ready");
+                var timeStampBytes = new byte[4];
+                Array.Copy(res.data, 24, timeStampBytes, 0, 4);
                 Console.WriteLine(BitConverter.ToInt32(timeStampBytes, 0));
-                Play?.Invoke(this, new PlayEvent(0, Convert.ToInt32(countDownTime), BitConverter.ToInt32(timeStampBytes, 0), name));
-            }
-
-
-            if (res.header.MessageType == 0x033B) //party check
-            {
-                Console.WriteLine("mark");
-                var nameBytes = new byte[18];
-                Array.Copy(res.data, 52, nameBytes, 0, 18);
-                var name = Encoding.UTF8.GetString(nameBytes) ?? "";
-                Play?.Invoke(this, new PlayEvent(1, 0, name));
+                Play?.Invoke(this, new PlayEvent(0, 5, BitConverter.ToInt32(timeStampBytes, 0), "合奏助手"));
 
             }
-            if (res.header.MessageType == 0x0355) //scene mark
-            {
-                Console.WriteLine("272");
+            //if (res.header.MessageType == 0x02e8) //scene mark
+            //{
+            //    Console.WriteLine("ensemble end");
 
-                Play?.Invoke(this, new PlayEvent(1, 0, "紧急"));
+            //    Play?.Invoke(this, new PlayEvent(1, 0, "紧急"));
 
-            }
+            //}
             
 
         }
@@ -206,43 +214,36 @@ namespace Daigassou
             {
                 Process p = new Process();
                 var exePath = Process.GetCurrentProcess().MainModule.FileName;
-                p.StartInfo.FileName = "cmd.exe"; //命令
-                p.StartInfo.UseShellExecute = false; //不启用shell启动进程
-                p.StartInfo.RedirectStandardInput = true; // 重定向输入
-                p.StartInfo.RedirectStandardOutput = true; // 重定向标准输出
-                p.StartInfo.RedirectStandardError = true; // 重定向错误输出 
-                p.StartInfo.CreateNoWindow = true; // 不创建新窗口
-                p.Start();
-                p.StandardInput.WriteLine("netsh advfirewall firewall add rule name=\"WinClient\" dir=in program=\"" + exePath + "\" action=allow localip=any remoteip=any security=notrequired description=DFAssist"); //cmd执行的语句
-                                                                                                                                                                                                                        //p.StandardOutput.ReadToEnd(); //读取命令执行信息
-                p.StandardInput.WriteLine("exit"); //退出
+                //p.StartInfo.FileName = "cmd.exe"; //命令
+                //p.StartInfo.UseShellExecute = false; //不启用shell启动进程
+                //p.StartInfo.RedirectStandardInput = true; // 重定向输入
+                //p.StartInfo.RedirectStandardOutput = true; // 重定向标准输出
+                //p.StartInfo.RedirectStandardError = true; // 重定向错误输出 
+                //p.StartInfo.CreateNoWindow = true; // 不创建新窗口
+                //p.Start();
+                //p.StandardInput.WriteLine("netsh advfirewall firewall add rule name=\"WinClient\" dir=in program=\"" + exePath + "\" action=allow localip=any remoteip=any security=notrequired description=DFAssist"); //cmd执行的语句
+                //                                                                                                                                                                                                        //p.StandardOutput.ReadToEnd(); //读取命令执行信息
+                //p.StandardInput.WriteLine("exit"); //退出
 
-                var netFwMgr = GetInstance<INetFwMgr>("HNetCfg.FwMgr");
-                var netAuthApps = netFwMgr.LocalPolicy.CurrentProfile.AuthorizedApplications;
+                INetFwPolicy2 firewallPolicy = GetInstance<INetFwPolicy2>("HNetCfg.FwPolicy2");
+                INetFwRule firewallRule = GetInstance<INetFwRule>("HNetCfg.FWRule");
+                bool isExists = false;
 
-                var isExists = false;
-                foreach (var netAuthAppObject in netAuthApps)
+                foreach (INetFwRule item in firewallPolicy.Rules)
                 {
-                    var netAuthApp = netAuthAppObject as INetFwAuthorizedApplication;
-                    if (netAuthApp != null && netAuthApp.ProcessImageFileName == exePath && netAuthApp.Enabled)
-                    {
-                        isExists = true;
-                    }
+                    if (item.ApplicationName == exePath) isExists = true;
                 }
-
                 if (!isExists)
                 {
-                    var netAuthApp = GetInstance<INetFwAuthorizedApplication>("HNetCfg.FwAuthorizedApplication");
+                    firewallRule.Name = "Daigassou";
+                    firewallRule.ApplicationName = exePath;
+                    firewallRule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
+                    firewallRule.Description = " My Windows Firewall Rule";
+                    firewallRule.Enabled = true;
+                    firewallRule.InterfaceTypes = "All";
 
-                    netAuthApp.Enabled = true;
-                    netAuthApp.Name = "Daigassou";
-                    netAuthApp.ProcessImageFileName = exePath;
-                    netAuthApp.Scope = NET_FW_SCOPE_.NET_FW_SCOPE_ALL;
-
-                    netAuthApps.Add(netAuthApp);
-
+                    firewallPolicy.Rules.Add(firewallRule);
                 }
-                Log.Info("l-firewall-registered");
             }
             catch (Exception ex)
             {

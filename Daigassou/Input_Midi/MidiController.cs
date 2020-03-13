@@ -88,7 +88,7 @@ namespace Daigassou.Input_Midi
 
         public void StopPlayback()
         {
-            playback.Stop();
+            if (playback != null) playback.Stop();
         }
         
         private void Playback_EventPlayed(object sender, MidiEventPlayedEventArgs e)

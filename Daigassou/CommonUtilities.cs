@@ -108,7 +108,7 @@ namespace Daigassou
                 sysTime.wMiliseconds = Convert.ToUInt16(dt.Millisecond);
                 try
                 {
-                    flag = SetSystemDateTime.SetLocalTime(ref sysTime);
+                    flag = SetLocalTime(ref sysTime);
                 }
                 catch (Exception e)
                 {
